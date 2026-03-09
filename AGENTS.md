@@ -9,19 +9,18 @@ Purpose: help Codex/agents quickly understand project workflow and house rules.
 - Prefer small, testable changes and run relevant tests.
 
 ## Quick Commands
-- Tests (all): `.venv/bin/python -m pytest`
-- Tests (workflow): `.venv/bin/python -m pytest tests/tools/test_devflow.py -v`
+- Update this section per project (build/test/lint commands).
 
 ## Project Layout (Template)
 - `.claude/plans/`: workflow state source of truth
-- `docs/`: workflow docs and runbooks
-- `tools/`: workflow helper CLI
-- `tests/`: workflow regression tests
+- `AGENTS.md`: agent instructions and /develop workflow
+- `CLAUDE.md`: project notes template
+- `README.md`: onboarding and usage guide
 
 ## Docs to Keep in Sync
 - `AGENTS.md`: agent rules
 - `CLAUDE.md`: local project notes
-- `docs/DEVELOP_WORKFLOW.md`: /develop execution runbook
+- `README.md`: usage guide
 
 ---
 
@@ -113,16 +112,6 @@ sub-step이 없으면:
 - 모든 Phase `[✅]` 확인
 - 최종 빌드 + 테스트 통과
 - Plan 파일 상단 Status를 `complete`로 변경
-
-### Codex 실행 보조 명령
-
-- 실행 도구: `python -m tools.devflow`
-- 새 plan 생성: `python -m tools.devflow new "<요구사항>"`
-- 재개 대상 확인: `python -m tools.devflow resume`
-- Phase 게이트 검사: `python -m tools.devflow check-phase --phase <N> --message "<type(scope): subject>"`
-- Phase 완료(기본: 커밋 없음): `python -m tools.devflow complete-phase --phase <N> --message "<type(scope): subject>"`
-- Plan 완료(기본: 커밋 없음): `python -m tools.devflow complete-plan --message "<type(scope): subject>"`
-- 자동 커밋이 필요하면 `--commit` 플래그를 추가
 
 ### 상태 정본 원칙
 
