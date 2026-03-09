@@ -1,82 +1,99 @@
-# Codex /develop Workflow Template
+# Codex Workflow
 
-이 저장소는 Codex 채팅에서 `/develop` 워크플로우를 실행하기 위한 최소 템플릿입니다.
+이 저장소는 두 가지를 함께 제공합니다.
 
-## 목적
-- 프로젝트마다 동일한 `/develop` 실행 규칙 유지
-- `.claude/plans/*.md`를 워크플로우 상태 정본으로 사용
-- 채팅 지시만으로 계획-구현-검증 루프 운영
+- 프로젝트 로컬 워크플로우 템플릿 (`AGENTS.md`, `CLAUDE.md`, `.claude/plans/`)
+- Codex 전역 스킬 자산 (`permission-bootstrap`)
 
-## Claude Workflow와 함께 사용 (필수)
-이 템플릿은 아래 전역 설정 저장소와 **항상 함께** 사용합니다.
+## 권장 구조
 
-- 전역 저장소: `git@sapsalian:sapsalian/claude-workflow.git`
-- 전역 위치: `~/.claude`
-- 확인된 핵심 파일: `settings.json`, `CLAUDE.md`, `hooks/auto-approve-exit-plan.sh`, `skills/develop/SKILL.md`
+- `codex-workflow` 저장소는 한 번 클론해서 기준 저장소로 유지
+- 각 프로젝트에는 템플릿 파일만 적용
+- 전역 스킬은 `~/.codex`에 설치
 
-### 1) 새 환경 설치 (`~/.claude` 없음)
+즉, 한 저장소를 "템플릿 + 전역 자산 배포 소스"로 사용합니다.
 
-```bash
-git clone git@sapsalian:sapsalian/claude-workflow.git ~/.claude
-chmod +x ~/.claude/hooks/auto-approve-exit-plan.sh
-```
+중요 제한:
+- `AGENTS.md`는 각 프로젝트 루트에 있어야 적용됩니다.
+- `~/.codex`에만 두면 프로젝트 규칙으로 자동 적용되지 않습니다.
 
-### 2) 기존 `~/.claude`에 적용
+## 1) 저장소 클론
 
 ```bash
-cd ~/.claude
-git init
-git remote add origin git@sapsalian:sapsalian/claude-workflow.git
-git fetch origin
-git checkout main -- settings.json CLAUDE.md hooks/ skills/
-chmod +x ~/.claude/hooks/auto-approve-exit-plan.sh
+git clone git@sapsalian:sapsalian/codex-workflow.git ~/workflows/codex-workflow
+cd ~/workflows/codex-workflow
 ```
 
-### 3) 업데이트
+## 2) 전역 자산 설치 (`~/.codex`)
 
 ```bash
-cd ~/.claude
-git pull
-chmod +x hooks/auto-approve-exit-plan.sh
+./scripts/install-global-assets.sh
 ```
 
-## 역할 분리
-- `~/.claude` (`claude-workflow`): 전역 권한/훅/스킬(특히 `/develop` 스킬)
-- 프로젝트 루트 (`codex-workflow` 템플릿): 프로젝트별 실행 규칙과 plan 기록
+설치 대상:
+- `~/.codex/skills/permission-bootstrap/SKILL.md`
 
-## 포함 파일 (최소 구성)
-- `AGENTS.md`: 에이전트 운영 규칙 + `/develop` 절차
-- `CLAUDE.md`: 프로젝트별 메모 템플릿
-- `.claude/plans/.gitkeep`: plan 디렉터리 유지
-- `.gitignore`: 로컬 plan 파일/캐시 제외 정책
+## 3) 프로젝트에 워크플로우 템플릿 적용
 
-## Codex 채팅에서 실행 방법
-다음처럼 채팅에 요청하면 됩니다.
+```bash
+./scripts/init-project-workflow.sh /path/to/your-project
+```
+
+기본 동작:
+- 기존 파일이 있으면 덮어쓰지 않음
+- 생성/복사 대상:
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `.claude/plans/.gitkeep`
+
+강제 덮어쓰기:
+
+```bash
+./scripts/init-project-workflow.sh /path/to/your-project --force
+```
+
+## 4) Codex에서 권한 부트스트랩 실행
+
+프로젝트 채팅에서:
 
 ```text
-/develop 결제 API 재시도 정책 추가
+permission-bootstrap 사용해줘
 ```
 
-또는 자연어로 요청해도 동일합니다.
+또는:
 
 ```text
-develop 워크플로우 사용해서 결제 API 재시도 정책 추가해줘
+$permission-bootstrap 사용
 ```
 
-## 실제 동작 원칙
-- 에이전트는 `AGENTS.md`의 `/develop 워크플로우`를 따름
-- Plan은 `.claude/plans/YYYY-MM-DD-<slug>.md` 형식으로 생성/갱신
-- 상태는 `[⏳ 대기]`, `[🔄 진행 중]`, `[✅ 완료]` 마커로 관리
-- 최종 완료 시 plan 메타 `Status: complete`로 변경
+스킬 동작:
+- 비파괴 명령 위주 prefix 승인 요청
+- 위험 명령(`rm -rf`, `git reset --hard`, `git clean`, `git push --force` 등)은 제외
+- optional 확장 세트는 선택 사항으로 안내 후 진행
 
-## 새 프로젝트 적용 순서
-1. 이 저장소를 새 레포로 복제
-2. 먼저 `~/.claude`에 `claude-workflow` 적용 확인
-3. `AGENTS.md`의 `Project Layout`/Quick Commands를 프로젝트 실정에 맞게 수정
-4. `CLAUDE.md`의 실행/테스트 명령을 프로젝트 명령으로 교체
-5. 이후 구현 요청은 채팅에서 `/develop ...`로 시작
+## 5) /develop 실행
 
-## 운영 팁
-- 상태 정본은 항상 `.claude/plans/*.md`
-- 구조가 바뀌면 `AGENTS.md`, `CLAUDE.md`를 같이 업데이트
-- 각 phase는 독립적으로 동작 가능한 단위로 나누는 것이 안전
+```text
+/develop <요구사항>
+```
+
+## 업데이트 정책 (질문 5 답변)
+
+업데이트 정책은 "이 저장소가 바뀌었을 때, 이미 설치된 전역 자산을 언제/어떻게 다시 동기화할지"를 의미합니다.
+
+현재 정책:
+- 수동 재동기화(권장)
+  1. `cd ~/workflows/codex-workflow && git pull`
+  2. `./scripts/install-global-assets.sh` 재실행
+
+이 방식의 장점:
+- 언제 전역 설정이 바뀌는지 사용자가 통제 가능
+- 예상치 못한 자동 변경 방지
+
+## 포함 파일
+
+- `AGENTS.md`: 공통 /develop 실행 규칙 템플릿
+- `CLAUDE.md`: 프로젝트 컨텍스트 템플릿
+- `global/skills/permission-bootstrap/SKILL.md`: 전역 권한 부트스트랩 스킬
+- `scripts/install-global-assets.sh`: 전역 스킬 설치 스크립트
+- `scripts/init-project-workflow.sh`: 프로젝트 템플릿 적용 스크립트
