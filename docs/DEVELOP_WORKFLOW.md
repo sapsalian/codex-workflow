@@ -7,6 +7,13 @@ The source of truth for workflow progress is project plan files under `.claude/p
 - Claude-only hooks (`PermissionRequest`, `EnterPlanMode`, `ExitPlanMode`) are unavailable in Codex runtime.
 - Codex can still execute the same workflow quality with explicit commands and plan files.
 
+## In-session usage (recommended)
+You can run this workflow directly in the current Codex chat session.
+
+- Send `/develop <requirement>` in chat.
+- Or ask in natural language (for example: `develop 워크플로우 사용해서 ...`).
+- The agent should follow `AGENTS.md` and update `.claude/plans/*.md` as the operational state source.
+
 ## Workflow
 1. Start or resume planning.
 2. Run Q&A rounds and lock decisions.

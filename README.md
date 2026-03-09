@@ -38,6 +38,20 @@ python -m tools.devflow --help
 python -m pytest tests/tools/test_devflow.py -v
 ```
 
+## Codex 채팅에서 바로 실행하기
+
+CLI를 직접 치지 않아도, 현재 Codex 채팅 세션에서 바로 워크플로우를 실행할 수 있습니다.
+
+- 채팅에 `/develop <요구사항>` 형태로 요청
+- 또는 `develop 워크플로우 사용해서 ...`처럼 자연어로 요청
+- 에이전트가 `AGENTS.md` 규칙에 맞춰 plan 확인/생성, phase 진행, 테스트/검증까지 순서대로 수행
+
+예시 요청:
+
+```text
+/develop 결제 API 재시도 정책 추가
+```
+
 ## 새 프로젝트에 붙여서 쓰는 방법
 
 1. 이 템플릿을 새 레포로 복제합니다.
