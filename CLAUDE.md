@@ -1,5 +1,10 @@
 # Project Notes for Claude
 
+## Global Workflow Dependency (Required)
+- This project template is paired with global `~/.claude` config from `git@sapsalian:sapsalian/claude-workflow.git`.
+- Keep these global files in sync: `settings.json`, `CLAUDE.md`, `hooks/auto-approve-exit-plan.sh`, `skills/develop/SKILL.md`.
+- Project workflow state source of truth is still `.claude/plans/*.md` in this repo.
+
 ## Coding Guidelines
 - 명확한 네이밍을 우선한다.
 - 구조 변경 시 문서(`AGENTS.md`, `README.md`)를 함께 업데이트한다.

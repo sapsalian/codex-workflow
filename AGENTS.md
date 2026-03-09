@@ -8,6 +8,11 @@ Purpose: help Codex/agents quickly understand project workflow and house rules.
 - Keep plan/resume behavior intact; avoid breaking plan status markers.
 - Prefer small, testable changes and run relevant tests.
 
+## Companion Global Workflow (Required)
+- This template must be used with `git@sapsalian:sapsalian/claude-workflow.git` in `~/.claude`.
+- Required global components: `settings.json`, `CLAUDE.md`, `hooks/auto-approve-exit-plan.sh`, `skills/develop/SKILL.md`.
+- Workflow state source of truth for this project remains `.claude/plans/*.md` under project root.
+
 ## Quick Commands
 - Update this section per project (build/test/lint commands).
 
