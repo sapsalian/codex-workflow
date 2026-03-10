@@ -62,24 +62,39 @@ Tell the user these are optional and ask whether to include them.
 
 ## Execution Flow
 1. Tell the user you will register core safe prefixes and offer optional expansion.
-2. Run harmless help/read commands with `sandbox_permissions=require_escalated` and `prefix_rule`.
-3. If a tool is missing, skip that prefix and continue.
-4. Summarize approved/skipped prefixes.
+2. Run harmless verification commands with `sandbox_permissions=require_escalated` and `prefix_rule`.
+3. Make the executed command start with the exact target prefix. Do not use generic help forms that change the saved prefix, such as `npm run --help` or `git remote -h`, when the goal is `npm run dev` or `git remote add`.
+4. It is acceptable for the verification command to exit non-zero if it only prints usage/help and performs no side effect.
+5. If a tool is missing, skip that prefix and continue.
+6. Summarize approved/skipped prefixes, and call out any prefix that appears to have been saved too narrowly.
 
 ## Suggested harmless commands
 - `git push --help` for `["git", "push"]`
 - `git pull --help` for `["git", "pull"]`
 - `git fetch --help` for `["git", "fetch"]`
 - `git add -h` for `["git", "add"]`
-- `git commit -h` for `["git", "commit", "-m"]`
-- `git remote -h` for `["git", "remote", "add"]`
+- `git commit -m codex-prefix-check --dry-run --allow-empty` for `["git", "commit", "-m"]`
+- `git remote add` for `["git", "remote", "add"]`
 - `git status -sb` for `["git", "status"]`
 - `git log -1 --oneline` for `["git", "log"]`
 - `git diff --name-only` for `["git", "diff"]`
 - `git show -s --oneline` for `["git", "show"]`
 - `npm install --help` for `["npm", "install"]`
-- `npm run --help` for all `npm run ...` prefixes
-- `pnpm --help` for `pnpm` prefixes
-- `yarn --help` for `yarn` prefixes
+- `npm run dev --help` for `["npm", "run", "dev"]`
+- `npm run build --help` for `["npm", "run", "build"]`
+- `npm run lint --help` for `["npm", "run", "lint"]`
+- `npm run test --help` for `["npm", "run", "test"]`
+- `npm run preview --help` for `["npm", "run", "preview"]`
+- `npm ci --help` for `["npm", "ci"]`
+- `pnpm install --help` for `["pnpm", "install"]`
+- `pnpm run dev --help` for `["pnpm", "run", "dev"]`
+- `pnpm run build --help` for `["pnpm", "run", "build"]`
+- `pnpm run lint --help` for `["pnpm", "run", "lint"]`
+- `pnpm run test --help` for `["pnpm", "run", "test"]`
+- `yarn install --help` for `["yarn", "install"]`
+- `yarn dev --help` for `["yarn", "dev"]`
+- `yarn build --help` for `["yarn", "build"]`
+- `yarn lint --help` for `["yarn", "lint"]`
+- `yarn test --help` for `["yarn", "test"]`
 - `pip install --help` for `["pip", "install"]`
 - `pytest --help` for `["pytest"]`
