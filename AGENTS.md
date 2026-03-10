@@ -6,16 +6,12 @@ Purpose: help Codex/agents quickly understand project workflow and house rules.
 - Use clear, self-explanatory names (functions/variables/classes).
 - Keep this file focused on global `/develop` workflow rules.
 - Store project-specific structure, commands, architecture notes, and domain rules in `CLAUDE.md`.
-- When project structure or constraints change, update `CLAUDE.md`.
+- Read `CLAUDE.md` actively before planning or implementation when project-specific context matters.
+- When implementation changes project structure, commands, architecture notes, constraints, or other project context, update `CLAUDE.md`.
 - Keep plan/resume behavior intact; avoid breaking plan status markers.
 - Prefer small, testable changes and run relevant tests.
 
-## Companion Global Workflow (Required)
-- This template must be used with [claude-workflow](https://github.com/sapsalian/claude-workflow) in `~/.claude`.
-- Required global components: `~/.claude/settings.json`, `~/.claude/CLAUDE.md`, `~/.claude/hooks/auto-approve-exit-plan.sh`, `~/.claude/skills/develop/SKILL.md`.
-
 ## Project Context Source
-- Read `CLAUDE.md` actively before planning or implementation when project-specific context matters.
 - Treat `CLAUDE.md` as the primary place for project structure, commands, architecture notes, and ongoing project details.
 
 ---
