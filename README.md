@@ -39,8 +39,7 @@ Codex와 Claude Code는 **피어(peer) 관계**입니다.
 
 ### CLAUDE.md 상태
 
-- git으로 추적하지 않음 (`.gitignore`에 포함)
-- 로컬 전용, 각 프로젝트 루트에 존재
+- 각 프로젝트 루트에 존재 (git 추적 여부는 프로젝트마다 다름)
 - Claude Code와 Codex 양쪽 모두 이 파일을 읽음
 
 ## 선행 조건
