@@ -19,12 +19,10 @@ Purpose: help Codex/agents quickly understand project workflow and house rules.
 - `.claude/plans/`: workflow state source of truth
 - `AGENTS.md`: agent instructions and /develop workflow
 - `CLAUDE.md`: project notes template
-- `README.md`: onboarding and usage guide
 
 ## Docs to Keep in Sync
 - `AGENTS.md`: agent rules
 - `CLAUDE.md`: local project notes
-- `README.md`: usage guide
 
 ---
 

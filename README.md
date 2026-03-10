@@ -16,6 +16,7 @@
 중요 제한:
 - `AGENTS.md`는 각 프로젝트 루트에 있어야 적용됩니다.
 - `~/.codex`에만 두면 프로젝트 규칙으로 자동 적용되지 않습니다.
+- 이 저장소의 `README.md`는 **템플릿 저장소 사용 안내 전용**이며, 사용자 프로젝트에 복사/적용되지 않습니다.
 
 ## 1) 저장소 클론
 
@@ -45,6 +46,9 @@ cd ~/workflows/codex-workflow
   - `AGENTS.md`
   - `CLAUDE.md`
   - `.claude/plans/.gitkeep`
+
+복사되지 않는 파일:
+- `README.md` (이 저장소 운영/설치 가이드 전용)
 
 강제 덮어쓰기:
 
