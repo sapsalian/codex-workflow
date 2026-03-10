@@ -1,6 +1,6 @@
 # Codex Home Repo
 
-`~/.codex`를 Git으로 관리하는 저장소. 전역 Codex skill과 prompt를 담당하며, 프로젝트 로컬 파일은 각 프로젝트 루트에서 관리합니다.
+`~/.codex`를 Git으로 관리하는 저장소. Claude가 자의적으로 진행하지 않도록 제어하는 개발 워크플로우 자동화 — Q&A → 설계 → 구현 각 단계마다 사용자 확인을 강제하고, plan 파일로 상태를 추적합니다. 전역 Codex skill과 prompt를 담당하며, 프로젝트 로컬 파일은 각 프로젝트 루트에서 관리합니다.
 
 ## Claude Code와의 협업
 
@@ -48,17 +48,29 @@ Codex와 Claude Code는 **피어(peer) 관계**입니다.
 
 ## 제공 항목
 
-- `skills/dev-full/SKILL.md` — dev-full: Q&A + 설계 + 구현 전 과정
-- `skills/dev-impl/SKILL.md` — plan 픽업 + 처방 검토 + 구현
-- `skills/dev-design/SKILL.md` — Q&A + plan 생성 전담
-- `skills/cothink/SKILL.md` — plan 없이 Q&A 반복 후 요청 수행
-- `skills/permission-bootstrap/SKILL.md` — 안전한 비파괴 명령 위주의 prefix_rule 승인 부트스트랩
-- `skills/init-project-agents/SKILL.md` — 프로젝트 루트에 최소 `AGENTS.md` 생성/갱신
-- `prompts/permission-bootstrap.prompt.md` — 권한 부트스트랩 호출용 저장 프롬프트
+### 개발 워크플로우 스킬
+
+| 파일 | 스킬 | 용도 |
+|---|---|---|
+| `skills/dev-full/SKILL.md` | `dev-full` | Q&A + 설계 + 구현 전 과정 |
+| `skills/dev-design/SKILL.md` | `dev-design` | Q&A + plan 생성 전담 |
+| `skills/dev-impl/SKILL.md` | `dev-impl` | plan 픽업 + 처방 검토 + 구현 |
+| `skills/cothink/SKILL.md` | `cothink` | plan 없이 Q&A 반복 후 요청 수행 |
+
+### 유틸리티 스킬 / 프롬프트
+
+| 파일 | 용도 |
+|---|---|
+| `skills/permission-bootstrap/SKILL.md` | 안전한 비파괴 명령 위주의 prefix_rule 승인 부트스트랩 |
+| `skills/init-project-agents/SKILL.md` | 프로젝트 루트에 최소 `AGENTS.md` 생성/갱신 |
+| `prompts/permission-bootstrap.prompt.md` | 권한 부트스트랩 호출용 저장 프롬프트 |
 
 ## 신규 프로젝트 시작
 
-claude-workflow 적용 → `init-project-agents` → `permission-bootstrap` → `dev-full <요구사항>`
+1. 프로젝트에 [claude-workflow](https://github.com/sapsalian/claude-workflow) 적용 (`.claude/plans/`, `CLAUDE.md` 생성)
+2. `init-project-agents` — 프로젝트 루트에 `AGENTS.md` 생성 (Codex 가드레일)
+3. `permission-bootstrap` — 비파괴 명령 위주로 prefix_rule 자동 승인 설정
+4. `dev-full <요구사항>` — Q&A → 전체 설계 → Phase별 세부 설계 → 구현 전 과정 진행
 
 ## 업데이트
 
