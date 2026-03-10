@@ -24,24 +24,40 @@ Inspect `.claude/plans/*.md`.
 ## Prescription Review
 *Only when a plan was picked up in Step 1.*
 
-Read the entire plan as an implementer. Actively review it and report to the user:
+Read the entire plan as an implementer. Actively review it and report:
 
 ```
 ## 처방 검토 결과
 
 ### 구현 관점 우려 사항
 - [설계 결정이 구현 시 문제가 될 수 있는 부분, 실현 가능성, 누락된 엣지 케이스 등]
+- 없으면: 없음
 
 ### 보완 제안 (선택적)
 - [구현하면 더 나은 부분이 있다면]
+- 없으면: 없음
 
 ### 구현 전 확인 필요 사항
 - [결정되지 않아 구현을 시작하기 전 사용자 확인이 필요한 항목]
+- 없으면: 없음
 ```
 
-- No concerns → "검토 완료, 구현을 시작합니다." and proceed.
-- Concerns found → present and resolve before proceeding.
-- Q&A on the plan is allowed at this stage.
+Concerns found → present and resolve before proceeding.
+
+After resolving, output the **execution plan summary**:
+
+```
+## 실행 계획
+
+| Phase | 주요 작업 | 비고 |
+|-------|-----------|------|
+| Phase 1: <title> | <Sub-steps 요약> | <검토 반영 사항> |
+| Phase 2: <title> | ... | ... |
+```
+
+Then ask: **"Phase 1 구현을 시작할까요? (yes/no)"**
+- yes → proceed to Step 4
+- no → stop.
 
 ---
 
@@ -81,30 +97,24 @@ Rules:
 
 Write the plan file at `.claude/plans/YYYY-MM-DD-<slug>.md`.
 
+Then ask: **"Phase 1 구현을 시작할까요? (yes/no)"**
+
 ## Step 4: Phase-by-phase execution
 
-### 4-1. Phase design Q&A (conditional)
+**Resuming**: skip completed `[✅ 완료]` phases, start from the first incomplete phase.
+
+### 4-1. Phase design check
 
 **Check the `세부 설계` section of the current phase:**
 
-- **세부 설계 섹션이 채워진 경우** (dev-design에서 Q&A 완료):
-  → Skip Q&A. Read the 세부 설계 section and proceed directly to implementation (4-2).
+- **세부 설계 섹션이 채워진 경우**: Read it and proceed directly to implementation (4-2).
 
-- **세부 설계 섹션이 비어있는 경우**:
-  → Inform the user:
-  > "이 Phase는 세부 설계가 필요합니다.
-  >  Claude Code에서 먼저 Q&A를 진행하거나,
-  >  여기서 Q&A를 진행하시겠습니까?"
-  → If user wants Q&A here, run at least 3 Q&A rounds using the phase checklist below.
-  → Fill in the `세부 설계` section in the plan file before implementing.
-
-Phase checklist (when Q&A is needed):
-- phase requirement clarification: must-have behavior, excluded behavior
-- success criteria, UI components, UI states, user interactions
-- data flow, implementation order, edge cases
+- **세부 설계 섹션이 비어있는 경우**: Inform the user:
+  > "이 Phase는 세부 설계가 필요합니다. Claude Code의 /dev-design을 먼저 실행하거나 여기서 Q&A를 진행하시겠습니까?"
+  → If user wants Q&A here, run at least 3 Q&A rounds using the phase checklist.
+  → Fill in the `세부 설계` section before implementing.
 
 Update the phase status to `[🔄 진행 중]`.
-If sub-steps exist, use `[🔄 진행 중] (0/N)`.
 
 ### 4-2. Phase implementation
 Use TDD. Q&A during implementation is allowed.
@@ -126,6 +136,12 @@ If no sub-steps:
 1. Run build and required tests.
 2. Mark the phase `[✅ 완료]`.
 3. Make the required phase completion commit.
+
+After committing, ask:
+- **If not the last phase**: **"Phase N+1 구현을 시작할까요? (yes/no)"**
+  - yes → continue to Phase N+1
+  - no → stop. Resume next time from Phase N+1.
+- **If the last phase**: proceed to final completion.
 
 ## Step 5: Final completion
 - Confirm all phases are `[✅ 완료]`

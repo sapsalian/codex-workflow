@@ -13,7 +13,7 @@ Inspect `.claude/plans/*.md`.
 
 **If plan files exist:**
 → Show the list and ask whether to resume or start a new plan.
-→ If resuming, find the first Phase with an empty `세부 설계` section → jump to Step 3.
+→ If resuming, find the first Phase with an empty `세부 설계` section → jump to Step 4.
 
 **If no plan file exists:**
 → Continue to Step 2.
@@ -74,26 +74,30 @@ Template:
 - [ ] Step 1: ...
 ```
 
-After writing the plan, ask: "Shall we proceed with Phase-level detailed design Q&A?"
+After writing the plan, ask: **"Shall we proceed with Phase 1 detailed design Q&A? (yes/no)"**
+- yes → proceed to Step 4
+- no → stop. Resume next time with `/dev-design` from Step 4.
 
 ## Step 4: Phase detailed design (design only, no implementation)
 
-For each Phase:
+For each Phase N:
 
 1. Run at least 3 Q&A rounds using the phase checklist:
-   - must-have behavior, excluded behavior
-   - success criteria
+   - must-have behavior, excluded behavior, success criteria
    - UI components, UI states, user interactions
    - data flow, implementation order, edge cases
 
 2. Fill in the `세부 설계` and `Sub-steps` sections in the plan file.
 
-3. Move to the next Phase (no implementation).
+3. After filling, ask:
+   - **If not the last phase**: **"Shall we start Phase N+1 detailed design? (yes/no)"**
+     - yes → continue to next phase design
+     - no → stop. Resume next time from next empty `세부 설계` phase.
+   - **If the last phase**: **"All phase designs are complete. Would you like to start implementation with dev-impl now, or later? (now/later)"**
+     - Both answers → stop. Implementation runs separately via `/dev-impl`.
 
 ## Completion
 
-After all Phase `세부 설계` sections are filled:
-
-> "Design is complete. You can start implementation using dev-impl (Claude Code or Codex) whenever you're ready."
+> "Design is complete. You can start implementation using /dev-impl (Claude Code or Codex) whenever you're ready."
 
 No forced handoff — implementation timing is up to you.

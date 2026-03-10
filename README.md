@@ -8,7 +8,7 @@ Codex와 Claude Code는 **피어(peer) 관계**입니다.
 
 | 스킬 | 용도 |
 |---|---|
-| `develop` (dev-full) | Q&A + 설계 + 구현 전 과정 (독립 실행) |
+| `dev-full` | Q&A + 설계 + 구현 전 과정 (독립 실행) |
 | `dev-design` | Q&A + plan 생성만. 구현은 언제든 dev-impl로 |
 | `dev-impl` | plan 픽업 + 처방 검토 + 구현 |
 | `cothink` | plan 없이 Q&A 반복 후 요청 수행 |
@@ -49,7 +49,7 @@ Codex와 Claude Code는 **피어(peer) 관계**입니다.
 
 ## 제공 항목
 
-- `skills/develop/SKILL.md` — dev-full: Q&A + 설계 + 구현 전 과정
+- `skills/dev-full/SKILL.md` — dev-full: Q&A + 설계 + 구현 전 과정
 - `skills/dev-impl/SKILL.md` — plan 픽업 + 처방 검토 + 구현
 - `skills/dev-design/SKILL.md` — Q&A + plan 생성 전담
 - `skills/cothink/SKILL.md` — plan 없이 Q&A 반복 후 요청 수행
@@ -59,7 +59,7 @@ Codex와 Claude Code는 **피어(peer) 관계**입니다.
 
 ## 신규 프로젝트 시작
 
-claude-workflow 적용 → `init-project-agents` → `permission-bootstrap` → `develop <요구사항>`
+claude-workflow 적용 → `init-project-agents` → `permission-bootstrap` → `dev-full <요구사항>`
 
 ## 업데이트
 

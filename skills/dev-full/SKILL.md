@@ -1,9 +1,9 @@
 ---
-name: develop
-description: Full cycle — Q&A + planning + phase-by-phase implementation. No handoff needed. (dev-full)
+name: dev-full
+description: Full cycle — Q&A + planning + all phases designed first, then all phases implemented. No handoff needed.
 ---
 
-# Develop (dev-full)
+# Dev-Full
 
 ## Required project context
 Before planning or implementation, read `CLAUDE.md` in the current project root.
@@ -15,8 +15,11 @@ Inspect `.claude/plans/*.md`.
 
 **If plan files exist:**
 → Show the list and ask which plan to pick up (or start a new one).
-→ Once a plan is selected, read it in full (Context + all Phase sections).
-→ Proceed to **Prescription Review** below.
+→ Once selected, read it in full. Determine current state:
+  - Phase with empty `세부 설계` exists → resume at Step 3 (design) from that phase.
+  - All `세부 설계` filled + incomplete implementation phases → resume at Step 4 (implementation).
+
+→ If resuming with a plan, proceed to **Prescription Review** below.
 
 **If no plan file exists:**
 → Continue to Step 2.
@@ -24,7 +27,7 @@ Inspect `.claude/plans/*.md`.
 ---
 
 ## Prescription Review
-*Only when a plan was picked up in Step 1.*
+*Only when resuming a plan from Step 1.*
 
 Read the entire plan as an implementer. Actively review it and report:
 
@@ -33,16 +36,22 @@ Read the entire plan as an implementer. Actively review it and report:
 
 ### Implementation Concerns
 - [Design decisions that may cause problems, feasibility issues, missing edge cases]
+- If none: None
 
 ### Optional Improvements
 - [Areas that could be enhanced]
+- If none: None
 
 ### Needs Confirmation Before Starting
 - [Undecided items that require user input]
+- If none: None
 ```
 
-- No concerns → "Review complete. Starting implementation." and proceed.
-- Concerns found → present and resolve before proceeding.
+Concerns found → present and resolve before proceeding.
+
+After resolving, ask: **"Shall we continue from where we left off? (yes/no)"**
+- yes → continue at the appropriate step
+- no → stop
 
 ---
 
@@ -55,8 +64,7 @@ Whole-plan checklist:
 - requirement clarification: problem, goal, included scope, excluded scope
 - user scenario: who uses it and in what flow
 - expected outcome: what counts as done
-- architecture/technology
-- UI/UX, API/interface, data model
+- architecture/technology, UI/UX, API/interface, data model
 - error handling, performance/constraints, test strategy
 
 At the start of each round, output:
@@ -103,22 +111,38 @@ Template:
 - [ ] Step 1: ...
 ```
 
-## Step 4: Phase-by-phase execution
+After writing the plan, ask: **"Shall we start Phase 1 detailed design Q&A? (yes/no)"**
+- yes → proceed to Step 4
+- no → stop. Resume next time with `/dev-full` from Step 4.
 
-For each phase:
+## Step 4: All phases detailed design
 
-### 4-1. Phase design Q&A (conditional)
+For each Phase N:
 
-**Check the `세부 설계` section:**
+1. Run at least 3 Q&A rounds using the phase checklist:
+   - must-have behavior, excluded behavior, success criteria
+   - UI components, UI states, user interactions
+   - data flow, implementation order, edge cases
 
-- **Filled** → Skip Q&A. Read 세부 설계 and proceed to implementation.
-- **Empty** → Run at least 3 Q&A rounds using the phase checklist:
-  - must-have behavior, success criteria, UI components/states, user interactions, data flow, edge cases
-  - Fill in the `세부 설계` section before implementing.
+2. Fill in the `세부 설계` and `Sub-steps` sections in the plan file.
 
-Update phase status to `[🔄 진행 중]`.
+3. After filling, ask:
+   - **If not the last phase**: **"Shall we start Phase N+1 detailed design? (yes/no)"**
+     - yes → continue to next phase design
+     - no → stop. Resume next time from the next empty `세부 설계` phase.
+   - **If the last phase**: **"All phase designs complete. Shall we start Phase 1 implementation? (yes/no)"**
+     - yes → proceed to Step 5
+     - no → stop. Resume next time at Step 5.
 
-### 4-2. Phase implementation
+## Step 5: All phases implementation
+
+For each Phase N:
+
+### 5-1. Phase implementation start
+
+Update plan file phase status to `[🔄 진행 중]`.
+
+### 5-2. Phase implementation
 Use TDD. Q&A during implementation is allowed.
 
 If sub-steps exist:
@@ -126,7 +150,7 @@ If sub-steps exist:
 2. Implement.
 3. Run tests before moving on.
 4. Make an intermediate commit.
-5. Update the sub-step counter.
+5. Update the sub-step counter in the plan.
 
 If no sub-steps:
 1. Write tests first.
@@ -134,12 +158,18 @@ If no sub-steps:
 3. Run tests and build.
 4. Make an intermediate commit.
 
-### 4-3. Phase completion
+### 5-3. Phase completion
 1. Run build and required tests.
 2. Mark the phase `[✅ 완료]`.
 3. Make the required phase completion commit.
 
-## Step 5: Final completion
+After committing, ask:
+- **If not the last phase**: **"Shall we start Phase N+1 implementation? (yes/no)"**
+  - yes → continue to next phase
+  - no → stop. Resume next time from Phase N+1.
+- **If the last phase**: proceed to final completion.
+
+## Step 6: Final completion
 - Confirm all phases are `[✅ 완료]`
 - Run final build and test checks
 - Update the plan header status to `complete`
