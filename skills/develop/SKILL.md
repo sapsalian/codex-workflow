@@ -27,12 +27,44 @@ Use `/develop` for structured implementation work:
 ## Step 1: Existing plan check
 Inspect `.claude/plans/*.md`.
 
-Rules:
-- If plan files exist, show them and ask whether to resume or start a new plan.
-- If a phase is `[🔄 진행 중]` or `[⏳ 대기]`, resume from that phase unless the user chooses otherwise.
-- If no plan file exists, continue to Step 2.
+**If plan files exist:**
+→ Show the list and ask which plan to pick up (or start a new one).
+→ Once a plan is selected, read it in full (Context + all Phase sections including 세부 설계).
+→ Skip Step 2 (whole Q&A). Proceed to **처방 검토** below.
+
+**If no plan file exists:**
+→ Continue to Step 2.
+
+---
+
+## 처방 검토 (Prescription Review)
+*Only when a plan was picked up in Step 1.*
+
+Read the entire plan as an implementer. Actively review it and report to the user:
+
+**Report format:**
+```
+## 처방 검토 결과
+
+### 구현 관점 우려 사항
+- [설계 결정이 구현 시 문제가 될 수 있는 부분, 실현 가능성, 누락된 엣지 케이스 등]
+
+### 보완 제안 (선택적)
+- [구현하면 더 나은 부분이 있다면]
+
+### 구현 전 확인 필요 사항
+- [결정되지 않아 구현을 시작하기 전 사용자 확인이 필요한 항목]
+```
+
+- If there are no concerns, output: "검토 완료, 구현을 시작합니다." and proceed.
+- If concerns exist, present them and ask the user how to resolve before proceeding.
+- Q&A on the plan is allowed at this stage if clarification is needed.
+
+---
 
 ## Step 2: Whole-plan Q&A
+*Only when no plan file exists.*
+
 Run at least 3 Q&A rounds for whole-plan design.
 
 Purpose:
@@ -76,11 +108,12 @@ Rules:
 - Auto-decide only obvious technical facts.
 
 ## Step 3: Create or update project plan
+*Only when no plan file exists (after Step 2).*
+
 Write the plan file at:
 - `.claude/plans/YYYY-MM-DD-<slug>.md`
 
 Use phase-based planning where each phase is independently meaningful.
-Split complex phases into sub-steps.
 
 Template:
 
@@ -94,24 +127,36 @@ Template:
 ## Phases
 
 ### Phase 1: <title> [⏳ 대기]
-<goal>
-- Step 1: ...
-- Step 2: ...
+**Goal**: <한 줄 목표>
+
+#### 세부 설계
+<!-- Claude Code Phase Q&A 완료 후 채워짐 -->
+
+#### Sub-steps
+<!-- Claude Code Phase Q&A 완료 후 채워짐 -->
+- [ ] Step 1: ...
+- [ ] Step 2: ...
 ```
 
 ## Step 4: Phase-by-phase execution
 For each phase:
 
-### 4-1. Phase design Q&A
-Run at least 3 Q&A rounds.
+### 4-1. Phase design Q&A (conditional)
 
-Purpose:
-- clarify expected phase behavior
-- confirm phase boundaries
-- define success criteria
-- resolve edge cases before implementation
+**Check the `세부 설계` section of the current phase:**
 
-Phase checklist:
+- **세부 설계 섹션이 채워진 경우** (Claude Code에서 Q&A 완료):
+  → Skip Q&A. Read the 세부 설계 section and proceed directly to implementation (4-2).
+
+- **세부 설계 섹션이 비어있는 경우**:
+  → Inform the user:
+  > "이 Phase는 세부 설계가 필요합니다.
+  >  Claude Code에서 먼저 Q&A를 진행하거나,
+  >  여기서 Q&A를 진행하시겠습니까?"
+  → If user wants Q&A here, run at least 3 Q&A rounds using the phase checklist below.
+  → Fill in the `세부 설계` section in the plan file before implementing.
+
+Phase checklist (when Q&A is needed):
 - phase requirement clarification: must-have behavior, excluded behavior
 - success criteria
 - UI components
@@ -126,6 +171,8 @@ If sub-steps exist, use `[🔄 진행 중] (0/N)`.
 
 ### 4-2. Phase implementation
 Use TDD.
+
+Q&A during implementation is allowed — if something is unclear while implementing, ask the user before proceeding.
 
 If sub-steps exist:
 1. Write tests first.
