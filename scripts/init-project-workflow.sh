@@ -36,12 +36,10 @@ copy_file() {
 copy_file "$REPO_ROOT/AGENTS.md" "$TARGET_ROOT/AGENTS.md"
 copy_file "$REPO_ROOT/CLAUDE.md" "$TARGET_ROOT/CLAUDE.md"
 
-mkdir -p "$TARGET_ROOT/.claude/plans"
-if [[ ! -f "$TARGET_ROOT/.claude/plans/.gitkeep" ]]; then
-  touch "$TARGET_ROOT/.claude/plans/.gitkeep"
-  echo "created: $TARGET_ROOT/.claude/plans/.gitkeep"
-else
-  echo "skip: $TARGET_ROOT/.claude/plans/.gitkeep (already exists)"
+if [[ ! -d "$TARGET_ROOT/.claude/plans" ]]; then
+  echo "error: missing $TARGET_ROOT/.claude/plans" >&2
+  echo "hint: install/apply git@sapsalian:sapsalian/claude-workflow.git to this project first" >&2
+  exit 1
 fi
 
 echo "done: project workflow template applied"
