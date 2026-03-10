@@ -1,9 +1,10 @@
-.venv/
-__pycache__/
-.pytest_cache/
-*.pyc
-.DS_Store
-
-# Keep plans local by default
-.claude/plans/*.md
-!.claude/plans/.gitkeep
+# Treat this repository as a live ~/.codex home.
+# Track only shared workflow assets; ignore runtime state and user-specific files.
+/*
+!/.gitignore
+!/README.md
+!/AGENTS.md
+!/skills/
+!/skills/**
+!/prompts/
+!/prompts/**
