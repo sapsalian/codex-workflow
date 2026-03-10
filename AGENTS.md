@@ -4,25 +4,19 @@ Purpose: help Codex/agents quickly understand project workflow and house rules.
 
 ## Golden Rules
 - Use clear, self-explanatory names (functions/variables/classes).
-- When changing structure or adding files, update docs (this file and/or CLAUDE.md).
+- Keep this file focused on global `/develop` workflow rules.
+- Store project-specific structure, commands, architecture notes, and domain rules in `CLAUDE.md`.
+- When project structure or constraints change, update `CLAUDE.md`.
 - Keep plan/resume behavior intact; avoid breaking plan status markers.
 - Prefer small, testable changes and run relevant tests.
 
 ## Companion Global Workflow (Required)
-- This template must be used with `git@sapsalian:sapsalian/claude-workflow.git` in `~/.claude`.
-- Required global components: `settings.json`, `CLAUDE.md`, `hooks/auto-approve-exit-plan.sh`, `skills/develop/SKILL.md`.
+- This template must be used with [claude-workflow](https://github.com/sapsalian/claude-workflow) in `~/.claude`.
+- Required global components: `~/.claude/settings.json`, `~/.claude/CLAUDE.md`, `~/.claude/hooks/auto-approve-exit-plan.sh`, `~/.claude/skills/develop/SKILL.md`.
 
-## Quick Commands
-- Update this section per project (build/test/lint commands).
-
-## Project Layout (Template)
-- `.claude/plans/`: workflow state source of truth
-- `AGENTS.md`: agent instructions and /develop workflow
-- `CLAUDE.md`: project notes template
-
-## Docs to Keep in Sync
-- `AGENTS.md`: agent rules
-- `CLAUDE.md`: local project notes
+## Project Context Source
+- Read `CLAUDE.md` actively before planning or implementation when project-specific context matters.
+- Treat `CLAUDE.md` as the primary place for project structure, commands, architecture notes, and ongoing project details.
 
 ---
 

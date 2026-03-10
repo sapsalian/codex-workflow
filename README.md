@@ -2,7 +2,7 @@
 
 이 저장소는 두 가지를 함께 제공합니다.
 
-- 프로젝트 로컬 워크플로우 템플릿 (`AGENTS.md`, `CLAUDE.md`)
+- 프로젝트 로컬 워크플로우 템플릿 (`AGENTS.md`)
 - Codex 전역 스킬 자산 (`permission-bootstrap`)
 
 ## 권장 구조
@@ -20,10 +20,11 @@
 
 ## 0) 선행 조건 (필수)
 
-먼저 각 대상 프로젝트에 `git@sapsalian:sapsalian/claude-workflow.git` 구조가 적용되어 있어야 합니다.
+먼저 각 대상 프로젝트에 [claude-workflow](https://github.com/sapsalian/claude-workflow) 구조가 적용되어 있어야 합니다.
 
 - 전제: 대상 프로젝트에 `.claude/plans/` 구조가 이미 존재
-- 이 저장소는 그 구조를 만들지 않고, `AGENTS.md`/`CLAUDE.md` 템플릿과 전역 스킬만 담당
+- 이 저장소는 그 구조를 만들지 않고, `AGENTS.md` 템플릿과 전역 스킬만 담당
+- 프로젝트별 구조, 명령, 아키텍처 메모는 각 프로젝트의 `CLAUDE.md`에 직접 유지
 
 ## 1) 저장소 클론
 
@@ -51,10 +52,10 @@ cd ~/workflows/codex-workflow
 - 기존 파일이 있으면 덮어쓰지 않음
 - 생성/복사 대상:
   - `AGENTS.md`
-  - `CLAUDE.md`
 
 복사되지 않는 파일:
 - `README.md` (이 저장소 운영/설치 가이드 전용)
+- `CLAUDE.md` (프로젝트별 맥락 파일은 각 프로젝트에서 직접 유지)
 
 강제 덮어쓰기:
 
@@ -66,10 +67,10 @@ cd ~/workflows/codex-workflow
 
 프로젝트 루트로 복사해야 하는 파일:
 - `AGENTS.md`
-- `CLAUDE.md`
 
 프로젝트에 복사하지 않는 파일:
 - `README.md` (템플릿 저장소 운영 문서)
+- `CLAUDE.md` (프로젝트별 맥락은 각 프로젝트에서 직접 관리)
 - `global/` (전역 자산 원본)
 - `scripts/` (템플릿 적용 도구)
 - `.gitignore` (프로젝트별 정책이 다를 수 있으므로 자동 복사하지 않음)
@@ -79,7 +80,7 @@ cd ~/workflows/codex-workflow
 
 프로젝트에 남겨야 하는 파일:
 - `AGENTS.md`
-- `CLAUDE.md`
+- 프로젝트에서 직접 관리하는 `CLAUDE.md`
 - 기존에 `claude-workflow`로 준비된 `.claude/plans/` 구조
 
 ## 4) Codex에서 권한 부트스트랩 실행
@@ -123,7 +124,6 @@ $permission-bootstrap 사용
 ## 포함 파일
 
 - `AGENTS.md`: 공통 /develop 실행 규칙 템플릿
-- `CLAUDE.md`: 프로젝트 컨텍스트 템플릿
 - `global/skills/permission-bootstrap/SKILL.md`: 전역 권한 부트스트랩 스킬
 - `scripts/install-global-assets.sh`: 전역 스킬 설치 스크립트
 - `scripts/init-project-workflow.sh`: 프로젝트 템플릿 적용 스크립트

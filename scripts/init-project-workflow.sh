@@ -34,12 +34,16 @@ copy_file() {
 }
 
 copy_file "$REPO_ROOT/AGENTS.md" "$TARGET_ROOT/AGENTS.md"
-copy_file "$REPO_ROOT/CLAUDE.md" "$TARGET_ROOT/CLAUDE.md"
 
 if [[ ! -d "$TARGET_ROOT/.claude/plans" ]]; then
   echo "error: missing $TARGET_ROOT/.claude/plans" >&2
-  echo "hint: install/apply git@sapsalian:sapsalian/claude-workflow.git to this project first" >&2
+  echo "hint: install/apply https://github.com/sapsalian/claude-workflow to this project first" >&2
   exit 1
+fi
+
+if [[ ! -f "$TARGET_ROOT/CLAUDE.md" ]]; then
+  echo "warning: missing $TARGET_ROOT/CLAUDE.md" >&2
+  echo "hint: keep project-specific structure, commands, and architecture notes in CLAUDE.md" >&2
 fi
 
 echo "done: project workflow template applied"
