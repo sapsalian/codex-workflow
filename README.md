@@ -3,7 +3,7 @@
 이 저장소는 두 가지를 함께 제공합니다.
 
 - 프로젝트 로컬 워크플로우 템플릿 (`AGENTS.md`)
-- Codex 전역 스킬 자산 (`permission-bootstrap`)
+- Codex 전역 스킬 자산 (`develop`, `permission-bootstrap`)
 
 ## 권장 구조
 
@@ -40,6 +40,7 @@ cd ~/workflows/codex-workflow
 ```
 
 설치 대상:
+- `~/.codex/skills/develop/SKILL.md`
 - `~/.codex/skills/permission-bootstrap/SKILL.md`
 
 ## 3) 프로젝트에 워크플로우 템플릿 적용
@@ -108,6 +109,8 @@ $permission-bootstrap 사용
 /develop <요구사항>
 ```
 
+`develop` skill은 프로젝트의 `CLAUDE.md`를 먼저 읽고, 그 내용을 기준으로 Q&A, plan 생성/재개, phase 진행을 수행하도록 설계되어 있습니다.
+
 ## 업데이트 정책 (질문 5 답변)
 
 업데이트 정책은 "이 저장소가 바뀌었을 때, 이미 설치된 전역 자산을 언제/어떻게 다시 동기화할지"를 의미합니다.
@@ -124,6 +127,7 @@ $permission-bootstrap 사용
 ## 포함 파일
 
 - `AGENTS.md`: 공통 /develop 실행 규칙 템플릿
+- `global/skills/develop/SKILL.md`: 전역 develop 워크플로우 스킬
 - `global/skills/permission-bootstrap/SKILL.md`: 전역 권한 부트스트랩 스킬
 - `scripts/install-global-assets.sh`: 전역 스킬 설치 스크립트
 - `scripts/init-project-workflow.sh`: 프로젝트 템플릿 적용 스크립트
